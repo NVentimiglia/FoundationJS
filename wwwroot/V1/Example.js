@@ -16,13 +16,16 @@ class ExampleViewModel extends Observer
     constructor(root)
     {
         super();
+ 
         this.root = root;
 
         //fields                   
-        this.id = root.querySelector('label[name="id"]');
-        this.name = root.querySelector('label[name="name"]');
-        this.value = root.querySelector('label[name="value"]');
-        this.submit = root.querySelector('button[name="submit"]');
+        this.id = root.querySelector('[name="id"]');
+        this.name = root.querySelector('[name="name"]');
+        this.value = root.querySelector('[name="value"]');
+        this.submit = root.querySelector('[name="submit"]');
+
+
 
         //commands.. this and that work
         let that = this;

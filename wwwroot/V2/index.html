@@ -17,23 +17,12 @@
             <button id="submit" name="submit">Submit</label>
         </div>
 
+        <script src="Example.js"></script>
+        <script src="ObservableDictionary.js"></script>
 
-        <script src="../js/ObservableDictionary.js" ></script>
-        <script src="../js/Observable.js" ></script>
-        <script src="../js/Observer.js"></script>
-
-        <script src="../js/Example.js"></script>
-
-        <script type="text/javascript">
-            
-            let model = new ExampleModel();
-            model.name = "guest";
-            model.value = 1;
-            model.id = 0;
-
-            let view = document.getElementById("root");            
-            let viewModel = new ExampleViewModel(view);
-            viewModel.bind(model);
+        <script type="text/javascript">            
+            let controller = new ExampleController();
+            controller.init();
         </script>
     </body>
 </html>

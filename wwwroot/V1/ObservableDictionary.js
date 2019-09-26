@@ -1,4 +1,20 @@
 /**
+ * Key value pair
+ */
+class Tuple
+{
+    key = null;
+    value = null;
+
+    constructor(key, value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+
+/**
  * C# Key value pair container with event handler
  */
 class ObservableDictionary

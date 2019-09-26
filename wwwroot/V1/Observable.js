@@ -29,10 +29,22 @@ class Observable
 
     /**
      * adds handler
+     * @param handler function(model)
      * @returns reference
      */
-    subscribe()
+    subscribe(handler)
     {
         this._counter ++;
+        this.onChange.push(this._counter, handler);
+        return this._counter;
+    }
+
+    /**
+     * removes handler
+     * @param ref handle identity passed from subscribe
+     */
+    unsubscribe(ref)
+    {
+        this.onChange.remove(ref);
     }
 }

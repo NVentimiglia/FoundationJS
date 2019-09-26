@@ -24,7 +24,7 @@ class Observer
         // -= unbind
         if(this.model !== null)
         {
-            this.model.onChange.remove(this._handle);
+            this.model.unsubscribe(this._handle);
         }
 
         // bind
@@ -34,8 +34,7 @@ class Observer
         // += bind
         if(this.model !== null)
         {
-            this._handle++;
-            this.model.onChange.push(this._handle, () =>
+            this._handle = this.model.subscribe(() =>
             {
                 this.onBind(m);
             });
