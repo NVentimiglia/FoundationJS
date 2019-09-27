@@ -253,9 +253,9 @@ class List
 
     // #endregion
 
-    // #region itteratiors
+    // #region Iterators
     /**
-     * Itterator
+     * Iterator
      * @param handle function({index} {object})
      */
     for(handle)
@@ -268,7 +268,7 @@ class List
     }
 
      /**
-     * Itterator
+     * Iterator
      * @param handle function({index} {object})
      */
     for(handle)
@@ -281,7 +281,7 @@ class List
     }
 
      /**
-     * Itterator
+     * Iterator
      * @param handle function({index} {object})
      */
     forReverse(handle)
@@ -294,7 +294,7 @@ class List
     }
 
     /**
-     * Itterator
+     * Iterator
      * @param handle function(Tuple)
      */
     forEach(handle)
@@ -305,7 +305,7 @@ class List
     }
 
      /**
-     * Itterator
+     * Iterator
      * @param handle function(Tuple)
      */
     forEachReverse(handle)
@@ -318,4 +318,81 @@ class List
     }
 
     // #endregion
+}
+
+/**
+ * Utility helper for views
+ */
+class ViewUtility
+{
+    static _counter = 0;
+
+    /**
+     * Creates a new view element from a prefab template
+     * @param {HtmlElement} prefab the template dom element
+     * @param {HtmlElement} parent the hosting dom element
+     * @param {string} id the new id of the instance
+     * @returns {HtmlElement} the created dom element
+     */
+    static Instantiate(prefab, parent, id = null)
+    {
+        if(id === null)
+        {
+            this._counter++;
+            id = prefab.id + this._counter;
+        }
+
+        let instance = prefab.cloneNode(true)
+        instance.id = id;
+        parent.appendChild(instance);
+        return instance;
+    }
+    
+    /**
+     * 
+     * @param {*} parent 
+     */
+    static GetChildren(parent)
+    {
+        return parent.children;
+    }
+
+    /**
+     * 
+     * @param {*} child 
+     */
+    static GetSiblings(child)
+    {
+        return child.parentElement.children.filter( c => c != child);
+    }
+    
+    /**
+     * 
+     * @param {*} index 
+     * @param {*} child 
+     */
+    static MoveSibling(index, child)
+    {
+        return this.InsertSibling(index, child, child.parentElement);
+    }
+
+    /**
+     * 
+     * @param {*} index 
+     * @param {*} parent 
+     * @param {*} child 
+     */
+    static InsertSibling(index, parent, child)
+    {
+        let siblings = this.GetSiblings(parent);
+
+        if(siblings.length > index)
+        {
+            siblings[index].insertAdjacentElement('beforebegin', child);
+        }
+        else
+        {
+            parent.appendChild(instance);
+        }
+    }
 }

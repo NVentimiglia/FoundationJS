@@ -7,6 +7,14 @@ function AssertEquals(x,y)
     }
 }
 
+function AssertNotEquals(x,y)
+{
+    if(x === y)
+    {
+        console.error("Failed");
+    }
+}
+
 
 class FoundationTests
 {
@@ -17,6 +25,7 @@ class FoundationTests
         this.TestEventHandler();
         this.TestEventHandlerArgs();
         this.TestLists();
+        this.TestViewUtility_Instantiate();
     }
 
     TestCallback()
@@ -161,5 +170,22 @@ class FoundationTests
         AssertEquals(list.count(), 0);
 
         console.log("TestLists Passed");
+    }
+
+    TestViewUtility_Instantiate()
+    {
+        let parent = document.getElementById("parent");
+        let prefab = document.getElementById("prefab");
+        let inst1 = ViewUtility.Instantiate(prefab, parent, "inst1");
+        AssertEquals(inst1.id, "inst1");
+        AssertEquals(inst1.parentElement, parent);
+        
+        let inst2 = ViewUtility.Instantiate(prefab, parent);
+        AssertNotEquals(inst1.id, "prefab");
+        AssertEquals(inst1.parentElement, parent);
+
+        parent.removeChild(inst1);
+         
+        console.log("TestViewUtility_Instantiate Passed");
     }
 }
