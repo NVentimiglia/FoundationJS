@@ -33,25 +33,23 @@ class EventHandler
     _callbacks = [];
 
     /**
-     * subscribes to the event
-     * @param callback {Callback} a callback
+     * @param {Callback} callback
      */
-    add(callback)
+    subscribe(callback)
     {
         if(!(callback instanceof Callback))
         {
-            console.error("!(callback instanceof Callback)")
-            return;
+            console.warn("!(callback instanceof Callback)")            
+            callback = new Callback(callback);
         }
 
         this._callbacks.push(callback);
     }
 
     /**
-     * unsubscribes to the event
-     * @param callback {Callback} a callback
+     * @param {Callback} callback
      */
-    remove(callback)
+    unsubscribe(callback)
     {
         if(!(callback instanceof Callback))
         {
@@ -96,13 +94,20 @@ class EventHandler
  */
 class List
 {
+    /** CONST */
+    static PUSH = 0;
+    /** CONST */
+    static REMOVE = 1;
+    /** CONST */
+    static CLEAR = 2;
+
     /**
      * @type {object[]}
      */
     values = [];
 
     /**
-     * @type {function} enum, value
+     * @type {EventHandler} enum, value
      */
     onChange = new EventHandler();
 
@@ -113,10 +118,7 @@ class List
      */
     _raise(type, value)
     {
-        this.onChange.forEach(h =>
-        {
-            h(type, value);
-        });
+        this.onChange.raise(type, value);
     }
 
     /** 
@@ -128,13 +130,21 @@ class List
     }
 
     /**
+     * length
+     */
+    count()
+    {
+        return this.values.length;
+    }
+
+    /**
      * add / update
      * @param {object} value
      */
     push(value)
     {
         //unique
-        let index = this.findIndex(key);
+        let index = this.indexOf(value);
 
         if(index == -1)
         {
@@ -145,7 +155,7 @@ class List
             this.values[index] = value;
         }
 
-        this._raise(List.PUSH, tuple)
+        this._raise(List.PUSH, value)
     }
 
     /**
@@ -155,7 +165,7 @@ class List
      */
     remove(key)
     {
-        let index = this.findIndex(key);
+        let index = this.indexOf(key);
 
         if(index > -1)
         {
@@ -189,6 +199,26 @@ class List
         this._raise(List.CLEAR, null)
     }
 
+    // #region observable
+
+    /**
+     * @param {Callback} callback
+     */
+    subscribe(callback)
+    {
+        this.onChange.subscribe(callback);
+    }
+
+    /**
+     * @param {Callback} callback
+     */
+    unsubscribe(callback)
+    {
+        this.onChange.unsubscribe(callback);
+    }
+
+    // #endregion
+
     // #region find
 
     /**
@@ -198,6 +228,18 @@ class List
     find(predicate)
     {
         return this.values.find(predicate);
+    }
+
+    /**
+     * @param {object} obj
+     * @returns {function} predicate
+     */
+    indexOf(obj)
+    {
+        return this.values.findIndex(function(e)
+        {
+            return e === obj;
+        });
     }
 
     /**
@@ -277,10 +319,3 @@ class List
 
     // #endregion
 }
-
-/** CONST */
-Object.defineProperty(List, 'PUSH', { value: 0 });
-/** CONST */
-Object.defineProperty(List, 'REMOVE', { value: 1 });
-/** CONST */
-Object.defineProperty(List, 'CLEAR', { value: 2 });

@@ -16,6 +16,7 @@ class FoundationTests
         this.TestCallbackArgs();
         this.TestEventHandler();
         this.TestEventHandlerArgs();
+        this.TestLists();
     }
 
     TestCallback()
@@ -65,15 +66,15 @@ class FoundationTests
         }
         let callback2 = new Callback(handle2);
 
-        handler.add(callback)
+        handler.subscribe(callback)
         handler.raise();
         AssertEquals(counter, 1);
         
-        handler.add(callback2)
+        handler.subscribe(callback2)
         handler.raise();
         AssertEquals(counter, 3);
 
-        handler.remove(callback2)
+        handler.unsubscribe(callback2)
         handler.raise();
         AssertEquals(counter, 4);
 
@@ -104,15 +105,15 @@ class FoundationTests
 
         let callback2 = new Callback(handle2);
 
-        handler.add(callback)
+        handler.subscribe(callback)
         handler.raise("test");
         AssertEquals(counter, 1);
         
-        handler.add(callback2)
+        handler.subscribe(callback2)
         handler.raise("test");
         AssertEquals(counter, 3);
 
-        handler.remove(callback2)
+        handler.unsubscribe(callback2)
         handler.raise("test");
         AssertEquals(counter, 4);
 
@@ -121,5 +122,44 @@ class FoundationTests
         AssertEquals(counter, 4);
         
         console.log("TestEventHandler Passed");
+    }
+
+    TestLists()
+    {
+        var list = new List();
+
+        AssertEquals(list.count(), 0);
+
+        let expectedType = null;
+        let expectedObject = null;
+
+        list.subscribe(new Callback(function(type, object)
+        {            
+            AssertEquals(expectedType, type);
+            AssertEquals(expectedObject, object);
+        }));
+
+        expectedObject = 1;
+        expectedType = List.PUSH;
+
+        list.push(expectedObject);
+        AssertEquals(list.count(), 1);
+
+        expectedObject = 2;
+        expectedType = List.PUSH;
+
+        list.push(expectedObject);
+        AssertEquals(list.count(), 2);
+
+        expectedType = List.REMOVE;
+        list.remove(expectedObject)
+        AssertEquals(list.count(), 1);
+
+        expectedType = List.CLEAR;
+        expectedObject = null;
+        list.clear();
+        AssertEquals(list.count(), 0);
+
+        console.log("TestLists Passed");
     }
 }
