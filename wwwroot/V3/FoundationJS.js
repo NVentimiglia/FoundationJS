@@ -349,8 +349,7 @@ class ViewUtility
     }
     
     /**
-     * 
-     * @param {*} parent 
+     * @param {HtmlElement} parent 
      */
     static GetChildren(parent)
     {
@@ -358,8 +357,7 @@ class ViewUtility
     }
 
     /**
-     * 
-     * @param {*} child 
+     * @param {HtmlElement} child 
      */
     static GetSiblings(child)
     {
@@ -367,9 +365,8 @@ class ViewUtility
     }
     
     /**
-     * 
-     * @param {*} index 
-     * @param {*} child 
+     * @param {number} index 
+     * @param {HtmlElement} child 
      */
     static MoveSibling(index, child)
     {
@@ -377,10 +374,9 @@ class ViewUtility
     }
 
     /**
-     * 
-     * @param {*} index 
-     * @param {*} parent 
-     * @param {*} child 
+     * @param {number} index 
+     * @param {HtmlElement} parent 
+     * @param {HtmlElement} child 
      */
     static InsertSibling(index, parent, child)
     {
@@ -395,4 +391,16 @@ class ViewUtility
             parent.appendChild(instance);
         }
     }
+}
+
+class ViewList
+{
+    model = null;
+
+    bind(model)
+    {
+        this.model = model;
+    }
+
+    unbind()
 }
